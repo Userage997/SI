@@ -3,29 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oborona KM - Telegram проект</title>
+    <title>Oborona KM - Вступление</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
         }
         
         body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        /* Первый экран - Интро */
+        .intro-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            z-index: 1000;
+            transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+        }
+        
+        .intro-screen.hidden {
+            transform: translateY(-100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .logo {
+            font-size: 4em;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .intro-title {
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-align: center;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d, #6bcf7f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .intro-subtitle {
+            font-size: 1.2em;
+            color: #b8b8b8;
+            margin-bottom: 40px;
+            text-align: center;
+            max-width: 500px;
+            line-height: 1.5;
+        }
+        
+        .enter-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
             color: white;
+            padding: 20px 50px;
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 1.3em;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+        }
+        
+        .enter-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 107, 107, 0.6);
+        }
+        
+        /* Второй экран - Основной */
+        .main-screen {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            min-height: 100vh;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .main-screen.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
         }
         
         .container {
-            max-width: 1200px;
             width: 100%;
+            max-width: 1200px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -37,14 +128,14 @@
         }
         
         .main-title {
-            font-size: 3.2em;
+
+font-size: clamp(2rem, 8vw, 3.2rem);
             font-weight: 800;
             margin-bottom: 15px;
             background: linear-gradient(45deg, #ff6b6b, #ffd93d, #6bcf7f);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
         
         .subtitle {
@@ -59,6 +150,7 @@
             color: #8a8a8a;
             max-width: 600px;
             line-height: 1.6;
+            text-align: center;
         }
         
         .buttons-section {
@@ -85,23 +177,6 @@
             transition: all 0.4s ease;
             box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
             border: 2px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .main-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-        
-        .main-button:hover::before {
-            left: 100%;
         }
         
         .main-button:hover {
@@ -132,25 +207,12 @@
         
         .feature-card {
             background: rgba(255, 255, 255, 0.05);
-
-border-radius: 20px;
+            border-radius: 20px;
             padding: 40px 30px;
             text-align: center;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(45deg, #ff6b6b, #4ECDC4);
         }
         
         .feature-card:hover {
@@ -178,39 +240,8 @@ border-radius: 20px;
             font-size: 1em;
         }
         
-        .footer {
-            margin-top: 60px;
-            text-align: center;
-            color: #666;
-            font-size: 0.9em;
-        }
-        
-        /* Анимации */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .fade-in {
-            animation: fadeInUp 0.8s ease-out;
-        }
-        
         /* Адаптивность */
         @media (max-width: 768px) {
-            .main-title {
-                font-size: 2.5em;
-            }
-            
-            .subtitle {
-                font-size: 1.1em;
-            }
-            
             .buttons-section {
                 flex-direction: column;
                 align-items: center;
@@ -232,20 +263,22 @@ border-radius: 20px;
             
             .feature-card {
                 padding: 30px 25px;
+
+}
+            
+            .enter-button {
+                padding: 18px 40px;
+                font-size: 1.2em;
             }
         }
         
         @media (max-width: 480px) {
-            .main-title {
-                font-size: 2em;
+            .intro-title {
+                font-size: 2rem;
             }
             
-            .subtitle {
+            .intro-subtitle {
                 font-size: 1em;
-            }
-            
-            .project-description {
-                font-size: 0.95em;
             }
             
             .main-button {
@@ -256,82 +289,99 @@ border-radius: 20px;
             .feature-card {
                 padding: 25px 20px;
             }
-            
-            .feature-icon {
-                font-size: 2.5em;
-            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Шапка -->
-        <div class="header fade-in">
-            <h1 class="main-title">OBORONA KM</h1>
-            <p class="subtitle">Профессиональная защита и безопасность</p>
-            <p class="project-description">
-                Специализированный Telegram-канал, посвященный вопросам кибербезопасности, 
-                защите информации и современным методам обеспечения цифровой защиты.
-            </p>
-        </div>
-        
-        <!-- Основные кнопки -->
-        <div class="buttons-section fade-in">
-            <a href="https://t.me/oboronakm" class="main-button" target="_blank">
-
-<span class="button-icon">📢</span>
-                ПЕРЕЙТИ В КАНАЛ
-            </a>
-            
-            <a href="https://t.me/sell_met" class="main-button ls-button" target="_blank">
-                <span class="button-icon">💬</span>
-                ЛИЧНЫЕ СООБЩЕНИЯ
-            </a>
-        </div>
-        
-        <!-- Особенности -->
-        <div class="features-section">
-            <div class="feature-card fade-in">
-                <span class="feature-icon">🛡️</span>
-                <h3 class="feature-title">Защита информации</h3>
-                <p class="feature-description">
-                    Современные методы защиты ваших данных и конфиденциальной информации 
-                    от кибератак и несанкционированного доступа.
+    <!-- Первый экран - Интро -->
+    <div class="intro-screen" id="introScreen">
+        <div class="logo">🛡️</div>
+        <h1 class="intro-title">OBORONA KM</h1>
+        <p class="intro-subtitle">
+            Присоединяйтесь к сообществу профессионалов кибербезопасности. 
+            Защита, знания, технологии.
+        </p>
+        <button class="enter-button" id="enterButton">
+            <span class="button-icon">🚀</span>
+            ВСТУПИТЬ В ОБОРОНУ
+        </button>
+    </div>
+    
+    <!-- Второй экран - Основной -->
+    <div class="main-screen" id="mainScreen">
+        <div class="container">
+            <div class="header">
+                <h1 class="main-title">ДОБРО ПОЖАЛОВАТЬ</h1>
+                <p class="subtitle">Вы в команде Oborona KM</p>
+                <p class="project-description">
+                    Теперь у вас есть доступ к эксклюзивным материалам по кибербезопасности 
+                    и прямой связи с командой профессионалов.
                 </p>
             </div>
             
-            <div class="feature-card fade-in">
-                <span class="feature-icon">🔒</span>
-                <h3 class="feature-title">Кибербезопасность</h3>
-                <p class="feature-description">
-                    Комплексные решения для обеспечения безопасности в цифровом пространстве. 
-                    Профилактика и устранение угроз.
-                </p>
+            <div class="buttons-section">
+                <a href="https://t.me/oboronakm" class="main-button" target="_blank">
+                    <span class="button-icon">📢</span>
+                    ПЕРЕЙТИ В КАНАЛ
+                </a>
+                
+                <a href="https://t.me/sell_met" class="main-button ls-button" target="_blank">
+                    <span class="button-icon">💬</span>
+                    ЛИЧНЫЕ СООБЩЕНИЯ
+                </a>
             </div>
             
-            <div class="feature-card fade-in">
-                <span class="feature-icon">⚡</span>
-                <h3 class="feature-title">Быстрая поддержка</h3>
-                <p class="feature-description">
-                    Оперативная помощь и консультации по вопросам безопасности. 
-                    Личные сообщения для индивидуального подхода.
-                </p>
+            <div class="features-section">
+                <div class="feature-card">
+                    <span class="feature-icon">🛡️</span>
+                    <h3 class="feature-title">Эксклюзивный контент</h3>
+                    <p class="feature-description">
+                        Доступ к закрытым материалам, методикам защиты и актуальным угрозам.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🔒</span>
+                    <h3 class="feature-title">Профессиональная поддержка</h3>
+                    <p class="feature-description">
+                        Консультации от экспертов в области кибербезопасности и защиты данных.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">⚡</span>
+                    <h3 class="feature-title">Оперативные обновления</h3>
+                    <p class="feature-description">
+                        Самые свежие новости и обновления в мире информационной безопасности.
+                    </p>
+                </div>
             </div>
-        </div>
-        
-        <!-- Подвал -->
-        <div class="footer fade-in">
-            <p>© 2025 Oborona KM. Все права защищены.</p>
         </div>
     </div>
 
     <script>
-        // Добавляем анимации при загрузке
         document.addEventListener('DOMContentLoaded', function() {
-            const elements = document.querySelectorAll('.fade-in');
-            elements.forEach((element, index) => {
-                element.style.animationDelay = ${index * 0.2}s;
+            const introScreen = document.getElementById('introScreen');
+            const mainScreen = document.getElementById('mainScreen');
+            const enterButton = document.getElementById('enterButton');
+            
+            enterButton.addEventListener('click', function() {
+                // Анимация скрытия интро-экрана
+                introScreen.classList.add('hidden');
+
+// Показ основного экрана с задержкой
+                setTimeout(function() {
+                    mainScreen.classList.add('active');
+                }, 500);
             });
+            
+            // Если пользователь сразу хочет на основной экран (например, при повторном посещении)
+            if (sessionStorage.getItem('visited')) {
+                introScreen.style.display = 'none';
+                mainScreen.classList.add('active');
+            } else {
+                sessionStorage.setItem('visited', 'true');
+            }
         });
     </script>
 </body>
