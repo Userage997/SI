@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oborona KM - Telegram проект</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .main-title {
+            font-size: 3.2em;
+            font-weight: 800;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d, #6bcf7f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.3em;
+            color: #b8b8b8;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        
+        .project-description {
+            font-size: 1.1em;
+            color: #8a8a8a;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+        
+        .buttons-section {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 80px;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+        }
+        
+        .main-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            color: white;
+            padding: 20px 50px;
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 1.3em;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .main-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .main-button:hover::before {
+            left: 100%;
+        }
+        
+        .main-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 107, 107, 0.6);
+        }
+        
+        .ls-button {
+            background: linear-gradient(45deg, #4ECDC4, #44A08D);
+            box-shadow: 0 10px 30px rgba(78, 205, 196, 0.4);
+        }
+        
+        .ls-button:hover {
+            box-shadow: 0 15px 40px rgba(78, 205, 196, 0.6);
+        }
+        
+        .button-icon {
+            font-size: 1.4em;
+        }
+        
+        .features-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1000px;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+
+border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(45deg, #ff6b6b, #4ECDC4);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .feature-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        
+        .feature-description {
+            color: #b8b8b8;
+            line-height: 1.6;
+            font-size: 1em;
+        }
+        
+        .footer {
+            margin-top: 60px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        /* Анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5em;
+            }
+            
+            .subtitle {
+                font-size: 1.1em;
+            }
+            
+            .buttons-section {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+                margin-bottom: 60px;
+            }
+            
+            .main-button {
+                width: 100%;
+                max-width: 350px;
+                padding: 18px 40px;
+                font-size: 1.2em;
+            }
+            
+            .features-section {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .feature-card {
+                padding: 30px 25px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-title {
+                font-size: 2em;
+            }
+            
+            .subtitle {
+                font-size: 1em;
+            }
+            
+            .project-description {
+                font-size: 0.95em;
+            }
+            
+            .main-button {
+                padding: 16px 30px;
+                font-size: 1.1em;
+            }
+            
+            .feature-card {
+                padding: 25px 20px;
+            }
+            
+            .feature-icon {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Шапка -->
+        <div class="header fade-in">
+            <h1 class="main-title">OBORONA KM</h1>
+            <p class="subtitle">Профессиональная защита и безопасность</p>
+            <p class="project-description">
+                Специализированный Telegram-канал, посвященный вопросам кибербезопасности, 
+                защите информации и современным методам обеспечения цифровой защиты.
+            </p>
+        </div>
+        
+        <!-- Основные кнопки -->
+        <div class="buttons-section fade-in">
+            <a href="https://t.me/oboronakm" class="main-button" target="_blank">
+
+<span class="button-icon">📢</span>
+                ПЕРЕЙТИ В КАНАЛ
+            </a>
+            
+            <a href="https://t.me/sell_met" class="main-button ls-button" target="_blank">
+                <span class="button-icon">💬</span>
+                ЛИЧНЫЕ СООБЩЕНИЯ
+            </a>
+        </div>
+        
+        <!-- Особенности -->
+        <div class="features-section">
+            <div class="feature-card fade-in">
+                <span class="feature-icon">🛡️</span>
+                <h3 class="feature-title">Защита информации</h3>
+                <p class="feature-description">
+                    Современные методы защиты ваших данных и конфиденциальной информации 
+                    от кибератак и несанкционированного доступа.
+                </p>
+            </div>
+            
+            <div class="feature-card fade-in">
+                <span class="feature-icon">🔒</span>
+                <h3 class="feature-title">Кибербезопасность</h3>
+                <p class="feature-description">
+                    Комплексные решения для обеспечения безопасности в цифровом пространстве. 
+                    Профилактика и устранение угроз.
+                </p>
+            </div>
+            
+            <div class="feature-card fade-in">
+                <span class="feature-icon">⚡</span>
+                <h3 class="feature-title">Быстрая поддержка</h3>
+                <p class="feature-description">
+                    Оперативная помощь и консультации по вопросам безопасности. 
+                    Личные сообщения для индивидуального подхода.
+                </p>
+            </div>
+        </div>
+        
+        <!-- Подвал -->
+        <div class="footer fade-in">
+            <p>© 2024 Oborona KM. Все права защищены.</p>
+        </div>
+    </div>
+
+    <script>
+        // Добавляем анимации при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach((element, index) => {
+                element.style.animationDelay = ${index * 0.2}s;
+            });
+        });
+    </script>
+</body>
+</html>
