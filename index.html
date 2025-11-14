@@ -191,6 +191,7 @@
             border: 2px solid rgba(255, 255, 255, 0.1);
             text-align: center;
             min-width: 250px;
+            cursor: pointer;
         }
         
         .main-button:hover {
@@ -490,6 +491,7 @@
             });
             
             function switchScreen(fromScreen, toScreen) {
+                fromScreen.classList.remove('active');
                 fromScreen.classList.add('hidden');
                 toScreen.classList.remove('hidden');
                 toScreen.classList.add('active');
@@ -497,7 +499,9 @@
             
             // Пропуск интро при повторном посещении
             if (sessionStorage.getItem('visited')) {
+                introScreen.classList.remove('active');
                 introScreen.classList.add('hidden');
+                mainScreen.classList.remove('hidden');
                 mainScreen.classList.add('active');
             } else {
                 sessionStorage.setItem('visited', 'true');
