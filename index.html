@@ -55,15 +55,17 @@
             100% { background-position: 0% 50%; }
         }
         
-        /* Переключатель темы */
-        .theme-switch {
+        /* Переключатель темы и статистики */
+        .top-controls {
             position: fixed;
             top: 20px;
             right: 20px;
             z-index: 1001;
+            display: flex;
+            gap: 10px;
         }
         
-        .theme-toggle {
+        .theme-toggle, .stats-toggle {
             background: rgba(255, 255, 255, 0.2);
             border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 50px;
@@ -75,14 +77,19 @@
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
             color: inherit;
+            font-size: 0.9em;
         }
         
-        .theme-toggle:hover {
+        .theme-toggle:hover, .stats-toggle:hover {
             background: rgba(255, 255, 255, 0.3);
             transform: scale(1.05);
         }
         
-        .theme-icon {
+        .stats-toggle {
+            background: linear-gradient(45deg, #9b59b6, #8e44ad);
+        }
+        
+        .theme-icon, .stats-icon {
             font-size: 1.2em;
         }
         
@@ -399,15 +406,6 @@
         
         .ls-button:hover {
             box-shadow: 0 15px 40px rgba(88, 214, 141, 0.6);
-        }
-        
-        .stats-button {
-            background: linear-gradient(45deg, #9b59b6, #8e44ad);
-            box-shadow: 0 10px 30px rgba(155, 89, 182, 0.4);
-        }
-        
-        .stats-button:hover {
-            box-shadow: 0 15px 40px rgba(155, 89, 182, 0.6);
         }
         
         .contact-button {
@@ -811,9 +809,14 @@
                 gap: 15px;
             }
             
-            .theme-toggle {
+            .top-controls {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .theme-toggle, .stats-toggle {
                 padding: 8px 12px;
-                font-size: 0.9em;
+                font-size: 0.8em;
             }
 
             .chat-window {
@@ -863,12 +866,21 @@
             .stats-number {
                 font-size: 3em;
             }
+
+            .top-controls {
+                right: 10px;
+                top: 10px;
+            }
         }
     </style>
 </head>
 <body class="dark-theme">
-    <!-- Переключатель темы -->
-    <div class="theme-switch">
+    <!-- Переключатель темы и статистики -->
+    <div class="top-controls">
+        <button class="stats-toggle" id="statsToggle">
+            <span class="stats-icon">📊</span>
+            <span class="stats-text">Статистика</span>
+        </button>
         <button class="theme-toggle" id="themeToggle">
             <span class="theme-icon">🌙</span>
             <span class="theme-text">Темная</span>
@@ -879,7 +891,7 @@
     <div class="screen active" id="introScreen">
         <div class="container">
             <div class="logo">🛡️</div>
-            <h1 class="intro-title">OBORONA KM</h1>
+            <h1 class="intro-title">ОБОРОНА КМ</h1>
             <p class="intro-subtitle">
                 Присоединяйтесь к сообществу профессионалов кибербезопасности
             </p>
@@ -926,11 +938,6 @@
                     <span class="button-icon">👤</span>
                     ИНФОРМАЦИЯ О ВЛАДЕЛЬЦЕ
                 </button>
-
-                <button class="main-button stats-button" id="statsButton">
-                    <span class="button-icon">📊</span>
-                    СТАТИСТИКА
-                </button>
             </div>
             
             <div class="features-section">
@@ -970,7 +977,7 @@
                     <h1 class="profile-name">ADAPTIVE</h1>
                     <p class="profile-bio">
                         Специалист по кибербезопасности и защите информации. 
-                        Создатель Oborona KM. Профессиональные решения для вашей цифровой безопасности.
+                        Создатель Oborona KM. Профессиональное решения для вашей безопасности в telegram.
                     </p>
                 </div>
             </div>
@@ -1103,14 +1110,14 @@
             const ipAddress = document.getElementById('ipAddress');
             const ipComplete = document.getElementById('ipComplete');
             const loadingDots = document.querySelector('.loading-dots');
-            const ipText = document.querySelector('.ipText');
+            const ipText = document.querySelector('.ip-text');
             const themeToggle = document.getElementById('themeToggle');
             const themeIcon = themeToggle.querySelector('.theme-icon');
             const themeText = themeToggle.querySelector('.theme-text');
+            const statsToggle = document.getElementById('statsToggle');
             const body = document.body;
             
             // Элементы статистики
-            const statsButton = document.getElementById('statsButton');
             const statsModal = document.getElementById('statsModal');
             const closeStats = document.getElementById('closeStats');
             const totalVisits = document.getElementById('totalVisits');
@@ -1203,7 +1210,7 @@
                 
                 getOnlineCount() {
                     // Имитация онлайн пользователей (1-5 человек)
-                    return Math.max(1, Math.floor(Math.random() * 5) + 1);
+                    return Math.max(1, Math.floor(Math.random() * 20) + 1);
                 }
             }
             
@@ -1254,6 +1261,7 @@
             }
             
             themeToggle.addEventListener('click', toggleTheme);
+            statsToggle.addEventListener('click', showStats);
             
             // Функция для получения IP-адреса
             async function getUserIP() {
@@ -1303,9 +1311,6 @@
             backButton.addEventListener('click', function() {
                 switchScreen(contactScreen, mainScreen);
             });
-            
-            // Показать статистику
-            statsButton.addEventListener('click', showStats);
             
             // Закрыть статистику
             closeStats.addEventListener('click', hideStats);
