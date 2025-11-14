@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OBORONA KM - Вступление</title>
+    <title>Oborona KM - Вступление</title>
     <style>
         * {
             margin: 0;
@@ -401,6 +401,15 @@
             box-shadow: 0 15px 40px rgba(88, 214, 141, 0.6);
         }
         
+        .stats-button {
+            background: linear-gradient(45deg, #9b59b6, #8e44ad);
+            box-shadow: 0 10px 30px rgba(155, 89, 182, 0.4);
+        }
+        
+        .stats-button:hover {
+            box-shadow: 0 15px 40px rgba(155, 89, 182, 0.6);
+        }
+        
         .contact-button {
             background: linear-gradient(45deg, #a8e6cf, var(--light-green));
             box-shadow: 0 10px 30px rgba(168, 230, 207, 0.4);
@@ -490,6 +499,107 @@
             line-height: 1.5;
             font-size: 0.95em;
             opacity: 0.8;
+        }
+
+        /* Статистика */
+        .stats-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .stats-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .stats-content {
+            background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            transform: scale(0.7);
+            transition: transform 0.3s ease;
+        }
+
+        .stats-modal.active .stats-content {
+            transform: scale(1);
+        }
+
+        .stats-title {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .stats-number {
+            font-size: 4em;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 20px;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .stats-label {
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 30px;
+        }
+
+        .stats-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .close-stats {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .close-stats:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
         }
 
         /* Чат поддержки */
@@ -715,6 +825,14 @@
                 bottom: 10px;
                 right: 10px;
             }
+
+            .stats-details {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-content {
+                padding: 30px 20px;
+            }
         }
         
         @media (max-width: 480px) {
@@ -741,6 +859,10 @@
                 width: 280px;
                 right: -10px;
             }
+
+            .stats-number {
+                font-size: 3em;
+            }
         }
     </style>
 </head>
@@ -757,7 +879,7 @@
     <div class="screen active" id="introScreen">
         <div class="container">
             <div class="logo">🛡️</div>
-            <h1 class="intro-title">ОБОРОНА КМ</h1>
+            <h1 class="intro-title">OBORONA KM</h1>
             <p class="intro-subtitle">
                 Присоединяйтесь к сообществу профессионалов кибербезопасности
             </p>
@@ -804,6 +926,11 @@
                     <span class="button-icon">👤</span>
                     ИНФОРМАЦИЯ О ВЛАДЕЛЬЦЕ
                 </button>
+
+                <button class="main-button stats-button" id="statsButton">
+                    <span class="button-icon">📊</span>
+                    СТАТИСТИКА
+                </button>
             </div>
             
             <div class="features-section">
@@ -843,8 +970,7 @@
                     <h1 class="profile-name">ADAPTIVE</h1>
                     <p class="profile-bio">
                         Специалист по кибербезопасности и защите информации. 
-                        Создатель Oborona KM.
-                        Профессиональные решения для вашей безопасности в telegram.
+                        Создатель Oborona KM. Профессиональные решения для вашей цифровой безопасности.
                     </p>
                 </div>
             </div>
@@ -901,6 +1027,36 @@
         </div>
     </div>
 
+    <!-- Модальное окно статистики -->
+    <div class="stats-modal" id="statsModal">
+        <div class="stats-content">
+            <h2 class="stats-title">📊 СТАТИСТИКА</h2>
+            <div class="stats-number" id="totalVisits">0</div>
+            <div class="stats-label">уникальных посетителей</div>
+            
+            <div class="stats-details">
+                <div class="stat-item">
+                    <div class="stat-value" id="todayVisits">0</div>
+                    <div class="stat-label">Сегодня</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="weekVisits">0</div>
+                    <div class="stat-label">За неделю</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="monthVisits">0</div>
+                    <div class="stat-label">За месяц</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="onlineNow">1</div>
+                    <div class="stat-label">Сейчас онлайн</div>
+                </div>
+            </div>
+            
+            <button class="close-stats" id="closeStats">ЗАКРЫТЬ</button>
+        </div>
+    </div>
+
     <!-- Чат поддержки -->
     <div class="support-widget">
         <div class="chat-toggle">
@@ -947,11 +1103,129 @@
             const ipAddress = document.getElementById('ipAddress');
             const ipComplete = document.getElementById('ipComplete');
             const loadingDots = document.querySelector('.loading-dots');
-            const ipText = document.querySelector('.ip-text');
+            const ipText = document.querySelector('.ipText');
             const themeToggle = document.getElementById('themeToggle');
             const themeIcon = themeToggle.querySelector('.theme-icon');
             const themeText = themeToggle.querySelector('.theme-text');
             const body = document.body;
+            
+            // Элементы статистики
+            const statsButton = document.getElementById('statsButton');
+            const statsModal = document.getElementById('statsModal');
+            const closeStats = document.getElementById('closeStats');
+            const totalVisits = document.getElementById('totalVisits');
+            const todayVisits = document.getElementById('todayVisits');
+            const weekVisits = document.getElementById('weekVisits');
+            const monthVisits = document.getElementById('monthVisits');
+            const onlineNow = document.getElementById('onlineNow');
+            
+            // Система подсчета посещений
+            class VisitCounter {
+                constructor() {
+                    this.storageKey = 'oborona_km_stats';
+                    this.init();
+                }
+                
+                init() {
+                    this.stats = this.getStats();
+                    this.recordVisit();
+                }
+                
+                getStats() {
+                    const defaultStats = {
+                        total: 0,
+                        today: 0,
+                        week: 0,
+                        month: 0,
+                        lastVisit: null,
+                        todayDate: this.getTodayDate()
+                    };
+                    
+                    try {
+                        const stored = localStorage.getItem(this.storageKey);
+                        return stored ? JSON.parse(stored) : defaultStats;
+                    } catch {
+                        return defaultStats;
+                    }
+                }
+                
+                recordVisit() {
+                    const now = new Date();
+                    const today = this.getTodayDate();
+                    
+                    // Сброс счетчиков если новый день
+                    if (this.stats.todayDate !== today) {
+                        this.stats.today = 0;
+                        this.stats.todayDate = today;
+                    }
+                    
+                    // Проверяем был ли сегодня уже визит
+                    const lastVisit = this.stats.lastVisit ? new Date(this.stats.lastVisit) : null;
+                    const timeDiff = lastVisit ? now - lastVisit : 24 * 60 * 60 * 1000; // 24 часа в миллисекундах
+                    
+                    // Учитываем визит только если прошло больше 30 минут с последнего
+                    if (!lastVisit || timeDiff > 30 * 60 * 1000) {
+                        this.stats.total++;
+                        this.stats.today++;
+                        this.stats.week = Math.min(this.stats.week + 1, this.stats.total);
+                        this.stats.month = Math.min(this.stats.month + 1, this.stats.total);
+                    }
+                    
+                    this.stats.lastVisit = now.toISOString();
+                    this.saveStats();
+                }
+                
+                getTodayDate() {
+                    return new Date().toDateString();
+                }
+                
+                saveStats() {
+                    try {
+                        localStorage.setItem(this.storageKey, JSON.stringify(this.stats));
+                    } catch (e) {
+                        console.error('Ошибка сохранения статистики:', e);
+                    }
+                }
+                
+                getFormattedStats() {
+                    return {
+                        total: this.formatNumber(this.stats.total),
+                        today: this.formatNumber(this.stats.today),
+                        week: this.formatNumber(this.stats.week),
+                        month: this.formatNumber(this.stats.month),
+                        online: this.formatNumber(this.getOnlineCount())
+                    };
+                }
+                
+                formatNumber(num) {
+                    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
+                
+                getOnlineCount() {
+                    // Имитация онлайн пользователей (1-5 человек)
+                    return Math.max(1, Math.floor(Math.random() * 5) + 1);
+                }
+            }
+            
+            // Инициализация счетчика
+            const visitCounter = new VisitCounter();
+            
+            // Показать статистику
+            function showStats() {
+                const stats = visitCounter.getFormattedStats();
+                totalVisits.textContent = stats.total;
+                todayVisits.textContent = stats.today;
+                weekVisits.textContent = stats.week;
+                monthVisits.textContent = stats.month;
+                onlineNow.textContent = stats.online;
+                
+                statsModal.classList.add('active');
+            }
+            
+            // Скрыть статистику
+            function hideStats() {
+                statsModal.classList.remove('active');
+            }
             
             // Управление темой
             function toggleTheme() {
@@ -1028,6 +1302,19 @@
             // Возврат с контактов на основной
             backButton.addEventListener('click', function() {
                 switchScreen(contactScreen, mainScreen);
+            });
+            
+            // Показать статистику
+            statsButton.addEventListener('click', showStats);
+            
+            // Закрыть статистику
+            closeStats.addEventListener('click', hideStats);
+            
+            // Закрыть статистику по клику на фон
+            statsModal.addEventListener('click', function(e) {
+                if (e.target === statsModal) {
+                    hideStats();
+                }
             });
             
             function switchScreen(fromScreen, toScreen) {
